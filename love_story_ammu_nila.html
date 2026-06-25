@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>For Ammu, my Nila — Forever</title>
+<meta name="description" content="A starlit love story for Ammu, written across the sky.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Caveat:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root{
+  --navy-deep:   #060912;
+  --navy:        #0B1330;
+  --navy-soft:   #131B3E;
+  --ruby:        #C81854;
+  --ruby-bright: #E63170;
+  --blush:       #F3B6C5;
+  --gold:        #D9B872;
+  --gold-bright: #EAD49C;
+  --parchment:   #F6EEDD;
+  --amber:       #E8965A;
+  --ink:         #2A1B2D;
+
+  --display: 'Cormorant Garamond', serif;
+  --hand:     'Caveat', cursive;
+  --body:     'Inter', system-ui, sans-serif;
+
+  --ease-soft: cubic-bezier(.22,.61,.36,1);
+  --ease-pop:  cubic-bezier(.34,1.56,.64,1);
+}
+
+body.high-contrast{
+  --navy-deep:#000000; --navy:#000000; --navy-soft:#0a0a0a;
+  --ruby:#ff4f86; --ruby-bright:#ff6fa1; --blush:#ffffff;
+  --gold:#ffd76a; --gold-bright:#ffe8a8; --parchment:#ffffff; --amber:#ffb27a; --ink:#000000;
+}
+
+*{ box-sizing:border-box; }
+html,body{ margin:0; padding:0; }
+body{
+  background:var(--navy-deep);
+  color:var(--parchment);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  height:100vh;
+  overflow-y:auto;
+  scroll-snap-type:y proximity;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{ background:var(--ruby); color:var(--parchment); }
+h1,h2,h3{ font-family:var(--display); font-weight:600; margin:0; }
+p{ margin:0 0 1em; }
+a{ color:inherit; }
+button{ font-family:var(--body); cursor:pointer; }
+
+/* respects reduced motion globally */
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
+}
+body.calm-mode *{ animation-duration:.001ms !important; transition-duration:120ms !important; }
+
+/* ============================================================
+   BACKGROUND STARFIELD
+   ============================================================ */
+#starfield{
+  position:fixed; inset:0; z-index:-2; width:100%; height:100%;
+  background:radial-gradient(ellipse at 50% -10%, var(--navy-soft), var(--navy-deep) 70%);
+}
+.section-veil{
+  position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background:linear-gradient(180deg, rgba(6,9,18,0) 0%, rgba(6,9,18,.55) 85%, rgba(6,9,18,.85) 100%);
+}
+
+/* ============================================================
+   LAYOUT / SECTIONS
+   ============================================================ */
+main{ position:relative; z-index:1; }
+section{
+  min-height:100vh;
+  scroll-snap-align:start;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:8vh 6vw; text-align:center; position:relative;
+  overflow:hidden;
+}
+.eyebrow{
+  font-family:var(--body); font-size:.72rem; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--gold); opacity:.85; margin-bottom:1.1em;
+}
+.chapter-title{ font-size:clamp(2.1rem, 6vw, 3.6rem); color:var(--parchment); font-style:italic; }
+.chapter-title em{ color:var(--ruby-bright); font-style:normal; }
+.lede{
+  max-width:640px; margin:1.3em auto 0; font-size:1.05rem; color:var(--blush);
+  font-weight:400;
+}
+.scene-frame{
+  position:relative; max-width:760px; width:100%; margin-top:2.4em;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#hero{ gap:.4em; }
+.hero-kicker{ font-family:var(--hand); font-size:1.4rem; color:var(--gold-bright); margin-bottom:.2em; }
+.hero-title{ font-size:clamp(2.6rem, 9vw, 5.2rem); font-style:italic; color:var(--parchment); line-height:1.05; }
+.hero-title em{ color:var(--ruby-bright); font-style:normal; }
+.hero-sub{ font-family:var(--hand); font-size:1.6rem; color:var(--blush); margin-top:.3em; }
+.scroll-cue{
+  margin-top:3.5em; font-size:.78rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--gold); opacity:.8; display:flex; flex-direction:column; align-items:center; gap:.5em;
+}
+.scroll-cue .chevron{ width:10px; height:10px; border-right:1.5px solid var(--gold); border-bottom:1.5px solid var(--gold); transform:rotate(45deg); animation:bob 1.8s ease-in-out infinite; }
+@keyframes bob{ 0%,100%{ transform:rotate(45deg) translateY(0); } 50%{ transform:rotate(45deg) translateY(6px); } }
+
+/* ============================================================
+   CRYSTAL HEART BUTTON (hero)
+   ============================================================ */
+.crystal-wrap{ margin:2.6em 0 .4em; }
+.crystal-heart{
+  --size:108px;
+  width:var(--size); height:var(--size); position:relative; border:none; background:none;
+  display:flex; align-items:center; justify-content:center;
+}
+.crystal-heart svg{ width:100%; height:100%; filter:drop-shadow(0 0 18px rgba(200,24,84,.55)); transition:transform .4s var(--ease-soft); }
+.crystal-heart:hover svg{ transform:scale(1.08) rotate(-4deg); filter:drop-shadow(0 0 28px rgba(230,49,112,.75)); }
+.crystal-heart:active svg{ transform:scale(.96); }
+.crystal-heart .facet{ animation:shimmer 5s linear infinite; }
+@keyframes shimmer{ 0%,100%{ opacity:.55; } 50%{ opacity:1; } }
+.btn-caption{ font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); opacity:.75; margin-top:.8em; }
+.reveal-panel{
+  max-width:480px; margin:1.6em auto 0; padding:1.2em 1.5em; border-radius:14px;
+  background:rgba(243,182,197,.06); border:1px solid rgba(217,184,114,.25);
+  font-family:var(--hand); font-size:1.35rem; color:var(--parchment); opacity:0; transform:translateY(8px);
+  transition:opacity .5s var(--ease-soft), transform .5s var(--ease-soft); pointer-events:none;
+}
+.reveal-panel.show{ opacity:1; transform:translateY(0); pointer-events:auto; }
+
+/* ============================================================
+   WAX SEAL LETTER (chapter 2)
+   ============================================================ */
+.letter-stage{ display:flex; flex-direction:column; align-items:center; gap:1.4em; }
+.wax-seal{
+  --s:88px; width:var(--s); height:var(--s); border-radius:50%; border:none;
+  background:radial-gradient(circle at 35% 30%, var(--ruby-bright), var(--ruby) 60%, #7c0e34 100%);
+  box-shadow:0 6px 18px rgba(200,24,84,.45), inset 0 2px 6px rgba(255,255,255,.25);
+  position:relative; display:flex; align-items:center; justify-content:center;
+  transition:transform .5s var(--ease-pop);
+}
+.wax-seal::after{ content:'✦'; font-size:1.6rem; color:rgba(255,255,255,.85); }
+.wax-seal:hover{ transform:scale(1.06) rotate(-3deg); }
+.wax-seal.broken{ transform:scale(1.25) rotate(18deg); opacity:0; transition:transform .55s var(--ease-soft), opacity .5s ease .15s; }
+.letter-paper{
+  max-width:520px; width:100%; background:linear-gradient(180deg, var(--parchment), #ECE2CC);
+  color:var(--ink); border-radius:6px; padding:2.2em 2em; box-shadow:0 18px 50px rgba(0,0,0,.45);
+  font-family:var(--hand); font-size:1.5rem; line-height:1.5;
+  opacity:0; transform:scaleY(.06) translateY(-10px); transform-origin:top center; max-height:0; overflow:hidden;
+  transition:opacity .6s var(--ease-soft) .1s, transform .7s var(--ease-soft), max-height .7s var(--ease-soft);
+}
+.letter-paper.open{ opacity:1; transform:scaleY(1) translateY(0); max-height:600px; }
+.letter-paper .sign{ display:block; margin-top:.6em; font-size:1.15rem; color:var(--ruby); }
+.note-nav{ font-family:var(--body); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color:var(--gold); background:none; border:1px solid rgba(217,184,114,.4); border-radius:999px; padding:.5em 1.1em; opacity:0; transition:opacity .4s ease .3s; }
+.note-nav.show{ opacity:1; }
+
+/* ============================================================
+   LANTERN RIVER (chapter 3)
+   ============================================================ */
+.river-stage{ position:relative; width:min(640px,90vw); height:220px; margin-top:1.6em; }
+.river-line{ position:absolute; left:0; right:0; bottom:34px; height:2px; background:linear-gradient(90deg, transparent, rgba(217,184,114,.5), transparent); }
+.lantern-btn{ background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:.6em; }
+.lantern-btn svg{ width:64px; height:78px; filter:drop-shadow(0 0 14px rgba(232,150,90,.55)); transition:transform .35s var(--ease-soft); }
+.lantern-btn:hover svg{ transform:translateY(-4px) scale(1.04); }
+.lantern-fly{
+  position:absolute; bottom:40px; left:6%; width:46px; height:58px; opacity:0; pointer-events:none;
+}
+.lantern-fly.go{ animation:driftLantern 4.2s var(--ease-soft) forwards; }
+@keyframes driftLantern{
+  0%{ opacity:0; transform:translate(0,0) scale(.7); }
+  10%{ opacity:1; }
+  100%{ opacity:0; transform:translate(82vw,-120px) scale(1.05); }
+}
+.wish-text{ font-family:var(--hand); font-size:1.3rem; color:var(--blush); margin-top:1.4em; opacity:0; transition:opacity .6s ease; min-height:1.6em; }
+.wish-text.show{ opacity:1; }
+
+/* ============================================================
+   PET LOVERS' HOLLOW (chapter 4)
+   ============================================================ */
+.pet-grid{ display:flex; flex-wrap:wrap; gap:1.1em; justify-content:center; max-width:680px; }
+.pet-card{
+  background:rgba(232,150,90,.07); border:1px solid rgba(232,150,90,.3); border-radius:16px;
+  padding:1.2em 1.4em; width:165px; transition:transform .4s var(--ease-pop), background .3s ease;
+}
+.pet-card .paw{ font-size:1.8rem; display:block; margin-bottom:.3em; }
+.pet-card .pname{ font-family:var(--display); font-style:italic; font-size:1.25rem; color:var(--parchment); }
+.pet-card .ptrait{ font-size:.82rem; color:var(--blush); opacity:.85; margin-top:.2em; }
+.pet-card.celebrate{ animation:hop .6s var(--ease-pop); background:rgba(232,150,90,.18); }
+@keyframes hop{ 0%,100%{ transform:translateY(0) rotate(0); } 30%{ transform:translateY(-14px) rotate(-4deg); } 60%{ transform:translateY(0) rotate(3deg); } }
+.pendant-btn{
+  margin-top:2em; background:none; border:1.5px solid var(--gold); color:var(--gold-bright);
+  border-radius:999px; padding:.7em 1.6em; font-size:.85rem; letter-spacing:.08em; text-transform:uppercase;
+  display:inline-flex; align-items:center; gap:.5em; transition:background .3s ease, transform .3s var(--ease-soft);
+}
+.pendant-btn:hover{ background:rgba(217,184,114,.12); transform:translateY(-2px); }
+.paw-trail{ position:relative; height:46px; margin-top:1em; width:min(640px,90vw); }
+.paw-print{ position:absolute; font-size:1.1rem; opacity:0; transition:opacity .4s ease; color:var(--gold-bright); }
+.paw-print.show{ opacity:.9; }
+.hollow-note{ font-family:var(--hand); font-size:1.25rem; color:var(--parchment); opacity:0; margin-top:.6em; transition:opacity .5s ease; }
+.hollow-note.show{ opacity:1; }
+
+/* ============================================================
+   OUR FOREVER HOME (chapter 5)
+   ============================================================ */
+.home-stage{ display:flex; flex-direction:column; align-items:center; }
+.key-btn{ background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:.6em; }
+.key-btn svg{ width:60px; height:60px; filter:drop-shadow(0 0 12px rgba(217,184,114,.5)); transition:transform .5s var(--ease-pop); }
+.key-btn:hover svg{ transform:rotate(35deg); }
+.door-illustration{ position:relative; width:min(420px,80vw); margin:2em auto 0; }
+.door-illustration svg{ width:100%; height:auto; }
+.door-illustration .door-panel{ transition:transform .8s var(--ease-soft); transform-origin:2% 50%; }
+.door-illustration.open .door-panel{ transform:rotateY(62deg); }
+.home-reveal{
+  max-width:520px; opacity:0; max-height:0; overflow:hidden; transition:opacity .6s ease .2s, max-height .8s var(--ease-soft);
+  margin-top:1.6em;
+}
+.home-reveal.show{ opacity:1; max-height:760px; }
+.timeline{ list-style:none; padding:0; margin:1.2em 0 0; text-align:left; display:inline-block; }
+.timeline li{ position:relative; padding-left:1.6em; margin-bottom:.9em; font-size:.95rem; color:var(--blush); }
+.timeline li::before{ content:''; position:absolute; left:0; top:.35em; width:8px; height:8px; border-radius:50%; background:var(--amber); box-shadow:0 0 8px var(--amber); }
+.timeline li .tdate{ font-family:var(--body); font-weight:600; color:var(--gold-bright); margin-right:.5em; }
+.porch{ display:flex; gap:2.4em; justify-content:center; margin-top:1.6em; }
+.chair-btn{ background:none; border:none; opacity:.65; transition:opacity .35s ease, transform .35s ease; }
+.chair-btn svg{ width:46px; height:56px; }
+.chair-btn.picked{ opacity:1; transform:translateY(-3px); }
+.porch-note{ font-family:var(--hand); font-size:1.3rem; color:var(--amber); opacity:0; margin-top:1em; transition:opacity .6s ease; }
+.porch-note.show{ opacity:1; }
+
+/* ============================================================
+   EPILOGUE — CONSTELLATION
+   ============================================================ */
+#epilogue svg.constellation{ width:min(520px,86vw); height:auto; overflow:visible; }
+.const-star{ fill:rgba(246,238,221,.55); cursor:pointer; transition:fill .25s ease, r .25s ease; }
+.const-star.done{ fill:var(--gold-bright); }
+.const-star.next{ fill:var(--ruby-bright); animation:pulseStar 1.4s ease-in-out infinite; }
+@keyframes pulseStar{ 0%,100%{ r:5; } 50%{ r:7.5; } }
+.const-line{ stroke:var(--gold); stroke-width:1.6; opacity:.85; }
+.const-label{ font-family:var(--display); font-style:italic; font-size:1.6rem; fill:var(--ruby-bright); opacity:0; transition:opacity .8s ease; }
+.const-label.show{ opacity:1; }
+.const-progress{ font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color:var(--gold); opacity:.7; margin-top:1em; }
+.finale-text{ max-width:520px; margin-top:1.6em; opacity:0; transition:opacity .8s ease .2s; font-size:1.05rem; color:var(--blush); }
+.finale-text.show{ opacity:1; }
+
+/* ============================================================
+   OVERLAY NAV / TOGGLES
+   ============================================================ */
+.overlay-nav{ position:fixed; top:1.4em; right:1.4em; z-index:50; display:flex; align-items:center; gap:.6em; }
+.nav-btn{
+  background:rgba(11,19,48,.55); border:1px solid rgba(217,184,114,.3); color:var(--parchment);
+  border-radius:999px; width:42px; height:42px; display:flex; align-items:center; justify-content:center;
+  font-size:1rem; backdrop-filter:blur(6px);
+}
+.nav-btn:focus-visible, .pendant-btn:focus-visible, button:focus-visible{ outline:2px solid var(--gold-bright); outline-offset:3px; }
+.menu-panel{
+  position:fixed; top:4.4em; right:1.4em; z-index:50; background:rgba(6,9,18,.92); border:1px solid rgba(217,184,114,.25);
+  border-radius:14px; padding:1em 1.1em; min-width:220px; backdrop-filter:blur(8px);
+  opacity:0; transform:translateY(-6px); pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+}
+.menu-panel.show{ opacity:1; transform:translateY(0); pointer-events:auto; }
+.menu-panel a{ display:block; font-size:.85rem; color:var(--blush); text-decoration:none; padding:.4em 0; border-bottom:1px solid rgba(217,184,114,.12); }
+.menu-panel a:last-of-type{ border-bottom:none; }
+.menu-toggle-row{ display:flex; align-items:center; justify-content:space-between; font-size:.78rem; color:var(--gold); margin-top:.7em; }
+.toggle-pill{ width:36px; height:20px; border-radius:999px; background:rgba(217,184,114,.25); position:relative; border:none; }
+.toggle-pill::after{ content:''; position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%; background:var(--gold-bright); transition:transform .25s ease; }
+.toggle-pill[aria-pressed="true"]::after{ transform:translateX(16px); }
+
+.chapter-dots{ position:fixed; right:1.6em; top:50%; transform:translateY(-50%); z-index:40; display:flex; flex-direction:column; gap:.7em; }
+.chapter-dots button{ width:8px; height:8px; border-radius:50%; background:rgba(246,238,221,.3); border:none; padding:0; }
+.chapter-dots button.active{ background:var(--gold-bright); box-shadow:0 0 8px var(--gold-bright); }
+@media (max-width:640px){ .chapter-dots{ display:none; } }
+
+/* ============================================================
+   PET COMPANION (cursor follower, desktop only)
+   ============================================================ */
+.pet-companion{ position:fixed; top:0; left:0; z-index:30; font-size:1.6rem; pointer-events:none; opacity:0; transition:opacity .4s ease; will-change:transform; }
+.pet-companion.active{ opacity:.85; }
+
+/* ============================================================
+   FULLSCREEN EASTER-EGG OVERLAY
+   ============================================================ */
+.egg-overlay{
+  position:fixed; inset:0; z-index:90; background:rgba(6,9,18,.88); backdrop-filter:blur(4px);
+  display:flex; align-items:center; justify-content:center; padding:6vw; opacity:0; pointer-events:none;
+  transition:opacity .4s ease;
+}
+.egg-overlay.show{ opacity:1; pointer-events:auto; }
+.egg-card{ max-width:460px; text-align:center; }
+.egg-card .et{ font-size:clamp(1.8rem,6vw,2.6rem); font-style:italic; color:var(--ruby-bright); }
+.egg-card p{ font-family:var(--hand); font-size:1.4rem; color:var(--parchment); margin-top:.6em; }
+.egg-close{ margin-top:1.6em; background:none; border:1px solid var(--gold); color:var(--gold-bright); border-radius:999px; padding:.5em 1.4em; font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; }
+
+.petal-shower{ position:fixed; inset:0; z-index:80; pointer-events:none; overflow:hidden; }
+.petal{ position:absolute; top:-5%; font-size:1.1rem; opacity:.9; animation:fallPetal linear forwards; }
+@keyframes fallPetal{ to{ transform:translateY(110vh) rotate(360deg); opacity:0; } }
+
+footer{ position:relative; z-index:1; text-align:center; padding:3em 6vw 4em; font-size:.78rem; color:rgba(246,238,221,.4); letter-spacing:.05em; }
+
+@media (max-width:560px){
+  .pet-grid{ gap:.8em; }
+  .pet-card{ width:130px; padding:1em; }
+  .overlay-nav{ top:1em; right:1em; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="starfield" aria-hidden="true"></canvas>
+<div class="pet-companion" id="petCompanion" aria-hidden="true">🐾</div>
+
+<!-- ============== OVERLAY NAV ============== -->
+<nav class="overlay-nav" aria-label="Story navigation">
+  <button class="nav-btn" id="menuToggle" aria-haspopup="true" aria-expanded="false" aria-controls="menuPanel" title="Menu">☰</button>
+</nav>
+<div class="menu-panel" id="menuPanel" role="menu">
+  <a href="#hero">Prologue</a>
+  <a href="#balcony">I — The Balcony</a>
+  <a href="#letters">II — The Love Letters</a>
+  <a href="#river">III — The Lantern River</a>
+  <a href="#pets">IV — Pet Lovers' Hollow</a>
+  <a href="#home">V — Our Forever Home</a>
+  <a href="#epilogue">Epilogue — Constellation of Us</a>
+  <div class="menu-toggle-row">
+    <span>Sound</span>
+    <button class="toggle-pill" id="soundToggle" aria-pressed="false" aria-label="Toggle ambient sound"></button>
+  </div>
+  <div class="menu-toggle-row">
+    <span>Calm mode (less motion)</span>
+    <button class="toggle-pill" id="calmToggle" aria-pressed="false" aria-label="Toggle calm mode"></button>
+  </div>
+  <div class="menu-toggle-row">
+    <span>High contrast</span>
+    <button class="toggle-pill" id="contrastToggle" aria-pressed="false" aria-label="Toggle high contrast"></button>
+  </div>
+</div>
+<div class="chapter-dots" id="chapterDots" aria-hidden="true"></div>
+
+<main>
+
+  <!-- ============== HERO / PROLOGUE ============== -->
+  <section id="hero" data-title="Prologue">
+    <div class="section-veil"></div>
+    <p class="hero-kicker" data-reveal>a story written in starlight, for</p>
+    <h1 class="hero-title" data-reveal>Ammu <em>— my Nila</em></h1>
+    <p class="hero-sub" data-reveal>(every sky has looked like this, since you)</p>
+
+    <div class="crystal-wrap" data-reveal>
+      <button class="crystal-heart" id="crystalHeart" aria-describedby="crystalCaption">
+        <svg viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="crystalGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#ffd3e0"/>
+              <stop offset="45%" stop-color="#E63170"/>
+              <stop offset="100%" stop-color="#7c0e34"/>
+            </linearGradient>
+          </defs>
+          <path d="M50 88 C20 64 6 44 6 27 C6 12 18 3 32 3 C41 3 48 8 50 16 C52 8 59 3 68 3 C82 3 94 12 94 27 C94 44 80 64 50 88 Z" fill="url(#crystalGrad)" class="facet"/>
+          <path d="M50 88 C20 64 6 44 6 27 C6 12 18 3 32 3" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5" class="facet"/>
+        </svg>
+      </button>
+      <p class="btn-caption" id="crystalCaption">press for a small poem · hold for a secret</p>
+      <div class="reveal-panel" id="crystalReveal" aria-live="polite"></div>
+    </div>
+
+    <div class="scroll-cue"><span>begin our story</span><span class="chevron"></span></div>
+  </section>
+
+  <!-- ============== CHAPTER I — BALCONY ============== -->
+  <section id="balcony" data-title="I — The Balcony">
+    <div class="section-veil"></div>
+    <p class="eyebrow" data-reveal>Chapter I</p>
+    <h2 class="chapter-title" data-reveal>The Balcony <em>that never had to be left</em></h2>
+    <p class="lede" data-reveal>
+      Two old houses, two old families — that's how the story usually goes. Ours started the same way:
+      a balcony, a held breath, a name said for the first time like it already mattered. But this Juliet
+      never has to lean over a railing and wonder when she'll see her love again. There's no goodnight
+      whispered across a gap — only a door we both already have the key to.
+    </p>
+    <p class="lede" style="font-family:var(--hand); font-size:1.4rem; color:var(--blush);" data-reveal>
+      Ammu — Nila, to me — every balcony since has just been a place I happened to be standing
+      until I found you again.
+    </p>
+  </section>
+
+  <!-- ============== CHAPTER II — LOVE LETTERS ============== -->
+  <section id="letters" data-title="II — The Love Letters">
+    <div class="section-veil"></div>
+    <p class="eyebrow" data-reveal>Chapter II</p>
+    <h2 class="chapter-title" data-reveal>The Love Letters</h2>
+    <p class="lede" data-reveal>Break the seal. There's a note inside, written for you.</p>
+    <div class="letter-stage" data-reveal>
+      <button class="wax-seal" id="waxSeal" aria-describedby="sealCaption"></button>
+      <p class="btn-caption" id="sealCaption">press the seal to open the letter</p>
+      <div class="letter-paper" id="letterPaper" aria-live="polite"></div>
+      <button class="note-nav" id="nextNote">read another note</button>
+    </div>
+  </section>
+
+  <!-- ============== CHAPTER III — LANTERN RIVER ============== -->
+  <section id="river" data-title="III — The Lantern River">
+    <div class="section-veil"></div>
+    <p class="eyebrow" data-reveal>Chapter III</p>
+    <h2 class="chapter-title" data-reveal>The River of Lanterns</h2>
+    <p class="lede" data-reveal>Light one, and send a wish downstream.</p>
+    <div class="river-stage" data-reveal>
+      <div class="river-line"></div>
+      <button class="lantern-btn" id="lanternBtn" aria-describedby="lanternCaption">
+        <svg viewBox="0 0 40 50">
+          <ellipse cx="20" cy="22" rx="15" ry="18" fill="#E8965A" opacity=".92"/>
+          <ellipse cx="20" cy="22" rx="15" ry="18" fill="none" stroke="#D9B872" stroke-width="1.4"/>
+          <rect x="17" y="2" width="6" height="6" fill="#D9B872"/>
+          <rect x="17" y="40" width="6" height="6" fill="#D9B872"/>
+          <circle cx="20" cy="22" r="6" fill="#FFE8C8" opacity=".9"/>
+        </svg>
+      </button>
+      <p class="btn-caption" id="lanternCaption">press to light &amp; release a lantern</p>
+      <div class="lantern-fly" id="lanternFly">
+        <svg viewBox="0 0 40 50"><ellipse cx="20" cy="22" rx="15" ry="18" fill="#E8965A"/><circle cx="20" cy="22" r="6" fill="#FFE8C8"/></svg>
+      </div>
+    </div>
+    <p class="wish-text" id="wishText"></p>
+  </section>
+
+  <!-- ============== CHAPTER IV — PET LOVERS' HOLLOW ============== -->
+  <section id="pets" data-title="IV — Pet Lovers' Hollow">
+    <div class="section-veil"></div>
+    <p class="eyebrow" data-reveal>Chapter IV</p>
+    <h2 class="chapter-title" data-reveal>Pet Lovers' Hollow</h2>
+    <p class="lede" data-reveal>
+      Some couples build a love story. We built one with four extra heartbeats running through the house.
+      <br><span style="opacity:.7; font-size:.85em;">(edit the <code>pets</code> list in the script to drop in your real ones)</span>
+    </p>
+    <div class="pet-grid" id="petGrid" data-reveal></div>
+    <button class="pendant-btn" id="pendantBtn" data-reveal>🐾 call them in</button>
+    <div class="hollow-note" id="hollowNote"></div>
+  </section>
+
+  <!-- ============== CHAPTER V — OUR FOREVER HOME ============== -->
+  <section id="home" data-title="V — Our Forever Home">
+    <div class="section-veil"></div>
+    <p class="eyebrow" data-reveal>Chapter V</p>
+    <h2 class="chapter-title" data-reveal>Our Forever Home</h2>
+    <p class="lede" data-reveal>No epilogue of parting here — just a key, and a door we share.</p>
+
+    <div class="home-stage" data-reveal>
+      <button class="key-btn" id="keyBtn" aria-describedby="keyCaption">
+        <svg viewBox="0 0 60 60"><circle cx="18" cy="30" r="11" fill="none" stroke="#D9B872" stroke-width="4"/><rect x="27" y="27" width="28" height="6" fill="#D9B872"/><rect x="46" y="33" width="5" height="8" fill="#D9B872"/><rect x="38" y="33" width="5" height="6" fill="#D9B872"/></svg>
+      </button>
+      <p class="btn-caption" id="keyCaption">wind the key to open our door</p>
+
+      <div class="door-illustration" id="doorIllustration">
+        <svg viewBox="0 0 200 220">
+          <rect x="10" y="10" width="180" height="200" fill="#1A2450" stroke="#D9B872" stroke-width="3"/>
+          <g class="door-panel">
+            <rect x="14" y="14" width="172" height="192" fill="#0F1638" stroke="#D9B872" stroke-width="2"/>
+            <circle cx="170" cy="110" r="4" fill="#EAD49C"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="home-reveal" id="homeReveal">
+        <p class="lede" style="margin-top:0;">
+          Through that door: a kettle that's always warm, a sofa with two permanent dents, and a small
+          parliament of pets who think the bed belongs to them. It isn't a grand kingdom. It's just ours —
+          and that's exactly what makes it the only one I want.
+        </p>
+        <ul class="timeline" id="timelineList"></ul>
+        <div class="porch">
+          <button class="chair-btn" id="chairA" aria-pressed="false" aria-label="A porch chair">
+            <svg viewBox="0 0 30 40"><rect x="4" y="6" width="22" height="3" fill="#E8965A"/><rect x="4" y="6" width="3" height="30" fill="#D9B872"/><rect x="23" y="6" width="3" height="30" fill="#D9B872"/><rect x="4" y="20" width="22" height="3" fill="#E8965A"/></svg>
+          </button>
+          <button class="chair-btn" id="chairB" aria-pressed="false" aria-label="The other porch chair">
+            <svg viewBox="0 0 30 40"><rect x="4" y="6" width="22" height="3" fill="#E8965A"/><rect x="4" y="6" width="3" height="30" fill="#D9B872"/><rect x="23" y="6" width="3" height="30" fill="#D9B872"/><rect x="4" y="20" width="22" height="3" fill="#E8965A"/></svg>
+          </button>
+        </div>
+        <p class="porch-note" id="porchNote">Two chairs, one porch, every evening for the rest of our lives — that's the whole plan, Nila.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== EPILOGUE — CONSTELLATION ============== -->
+  <section id="epilogue" data-title="Epilogue — Constellation of Us">
+    <div class="section-veil"></div>
+    <p class="eyebrow" data-reveal>Epilogue</p>
+    <h2 class="chapter-title" data-reveal>Constellation of Us</h2>
+    <p class="lede" data-reveal>Trace the glowing star to draw us into the sky, together.</p>
+    <svg class="constellation" id="constellation" viewBox="0 0 300 260" data-reveal></svg>
+    <p class="const-progress" id="constProgress">0 of 0 stars connected</p>
+    <p class="finale-text" id="finaleText">
+      However the story is usually told — two houses, two names, a tragedy waiting at the end — ours ends
+      differently. No poison, no parting, no last goodbye across a balcony. Just Ammu and Nila, a door we
+      both hold the key to, a houseful of pets who adore you almost as much as I do, and every star above
+      our forever home spelling out exactly how this story actually goes: on, and on, and on.
+    </p>
+  </section>
+
+</main>
+
+<footer>made of starlight, paper, and one very long forever &middot; for Ammu, my Nila</footer>
+
+<!-- ============== EASTER-EGG OVERLAY ============== -->
+<div class="egg-overlay" id="eggOverlay" role="dialog" aria-modal="true" aria-live="assertive">
+  <div class="egg-card">
+    <p class="et" id="eggTitle">✦</p>
+    <p id="eggBody"></p>
+    <button class="egg-close" id="eggClose">close</button>
+  </div>
+</div>
+<div class="petal-shower" id="petalShower" aria-hidden="true"></div>
+
+<script>
+/* ================================================================
+   CONFIG — edit everything in here to personalize the site.
+   No other part of the code needs to change.
+   ================================================================ */
+const CONFIG = {
+  herName: "Ammu",
+  nickname: "Nila",
+  yourName: "[Your Name]",
+
+  loveNotes: [
+    { body: "Some people fall in love slowly, like a sunrise. With you it was more like a window left open — the whole sky just came in at once. — N.", sign: "always, " },
+    { body: "I keep a list of small things you do without noticing — the one about how you talk to Nila changes my whole day every single time. I'm not going to tell you which list. Just know it's long.", sign: "yours, " },
+    { body: "If Romeo had gotten the boring, wonderful version of this story — Tuesday nights, bad TV, your feet always cold against mine — he'd have taken it over the balcony any day.", sign: "forever, " }
+  ],
+
+  pets: [
+    { name: "Max", emoji: "🐱", trait: "professional sunbeam occupier" },
+    { name: "Max", emoji: "🐶", trait: "world's most enthusiastic greeter" },
+    { name: "Max", emoji: "🐰", trait: "judges our cooking, silently" }
+  ],
+
+  milestones: [
+    { date: "[Date you met]", label: "Two strangers became a story" },
+    { date: "[Date you moved in together]", label: "One address, finally" },
+    { date: "[An anniversary]", label: "Still choosing this, every year" },
+    { date: "and beyond", label: "Whatever home looks like next, we build it together" }
+  ],
+
+  wishes: [
+    "Wherever you are, Nila, that's the direction every wish of mine travels in.",
+    "I wished for a lifetime. Turns out I already have it — I just wanted to say it out loud.",
+    "Even the river knows: every light on this water has your name folded inside it."
+  ]
+};
+
+/* ================================================================
+   UTIL
+   ================================================================ */
+const $  = (sel, ctx=document) => ctx.querySelector(sel);
+const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let calmMode = false;
+const motionOff = () => calmMode || prefersReducedMotion();
+
+/* ================================================================
+   STARFIELD CANVAS
+   ================================================================ */
+(function starfield(){
+  const canvas = $('#starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [], petals = [], w, h, dpr;
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = canvas.width = innerWidth * dpr;
+    h = canvas.height = innerHeight * dpr;
+    canvas.style.width = innerWidth+'px';
+    canvas.style.height = innerHeight+'px';
+    const count = Math.min(160, Math.floor((innerWidth*innerHeight)/9000));
+    stars = Array.from({length:count}, () => ({
+      x: Math.random()*w, y: Math.random()*h,
+      r: (Math.random()*1.4+.4)*dpr,
+      tw: Math.random()*Math.PI*2,
+      speed: Math.random()*0.015+0.005
+    }));
+  }
+  function spawnPetal(){
+    if (petals.length > 26) return;
+    petals.push({
+      x: Math.random()*w, y: -20,
+      vy: (Math.random()*0.4+0.25)*dpr,
+      vx: (Math.random()-0.5)*0.25*dpr,
+      r: (Math.random()*5+4)*dpr,
+      a: Math.random()*Math.PI*2,
+      glyph: Math.random() > 0.5 ? '♥' : '✦',
+      hue: Math.random() > 0.5 ? '#C81854' : '#D9B872'
+    });
+  }
+  let lastPetal = 0;
+  function draw(t){
+    ctx.clearRect(0,0,w,h);
+    stars.forEach(s=>{
+      s.tw += s.speed;
+      const alpha = 0.35 + Math.abs(Math.sin(s.tw))*0.6;
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(246,238,221,${alpha})`;
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fill();
+    });
+    if (!motionOff()){
+      if (t - lastPetal > 900){ spawnPetal(); lastPetal = t; }
+      petals.forEach((p,i)=>{
+        p.y += p.vy; p.x += p.vx + Math.sin(p.a+=0.02)*0.3;
+        ctx.globalAlpha = 0.55;
+        ctx.fillStyle = p.hue;
+        ctx.font = `${p.r*2}px serif`;
+        ctx.fillText(p.glyph, p.x, p.y);
+        ctx.globalAlpha = 1;
+      });
+      petals = petals.filter(p => p.y < h+30);
+    }
+    requestAnimationFrame(draw);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(draw);
+
+  document.addEventListener('visibilitychange', ()=>{ /* rAF auto-pauses in background tabs in most browsers */ });
+})();
+
+/* ================================================================
+   PET COMPANION (cursor follower — desktop, fine pointer only)
+   ================================================================ */
+(function petCompanion(){
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (!canHover) return;
+  const el = $('#petCompanion');
+  let tx=innerWidth/2, ty=innerHeight/2, cx=tx, cy=ty;
+  let active = false;
+  window.addEventListener('mousemove', e=>{
+    tx = e.clientX + 18; ty = e.clientY + 14;
+    if (!active){ active = true; el.classList.add('active'); }
+  });
+  function loop(){
+    cx += (tx-cx)*0.12; cy += (ty-cy)*0.12;
+    el.style.transform = `translate(${cx}px,${cy}px)`;
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+/* ================================================================
+   SCROLL REVEAL
+   ================================================================ */
+(function scrollReveal(){
+  $$('[data-reveal]').forEach(el=>{
+    el.style.opacity = 0;
+    el.style.transform = 'translateY(18px)';
+    el.style.transition = 'opacity .7s var(--ease-soft), transform .7s var(--ease-soft)';
+  });
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach((entry,i)=>{
+      if (entry.isIntersecting){
+        const els = $$('[data-reveal]', entry.target.closest('section') || document);
+        els.forEach((el,idx)=>{
+          setTimeout(()=>{ el.style.opacity = 1; el.style.transform='translateY(0)'; }, motionOff() ? 0 : idx*90);
+        });
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold:.18 });
+  $$('section').forEach(s=> io.observe(s));
+})();
+
+/* ================================================================
+   CHAPTER DOTS
+   ================================================================ */
+(function chapterDots(){
+  const sections = $$('main > section');
+  const wrap = $('#chapterDots');
+  sections.forEach((s,i)=>{
+    const b = document.createElement('button');
+    b.title = s.dataset.title || '';
+    b.addEventListener('click', ()=> s.scrollIntoView({behavior: motionOff() ? 'auto' : 'smooth'}));
+    wrap.appendChild(b);
+  });
+  const dots = $$('button', wrap);
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if (entry.isIntersecting){
+        const idx = sections.indexOf(entry.target);
+        dots.forEach((d,i)=> d.classList.toggle('active', i===idx));
+      }
+    });
+  }, { threshold:.5 });
+  sections.forEach(s=>io.observe(s));
+})();
+
+/* ================================================================
+   MENU + TOGGLES
+   ================================================================ */
+(function menu(){
+  const toggle = $('#menuToggle'), panel = $('#menuPanel');
+  toggle.addEventListener('click', ()=>{
+    const open = panel.classList.toggle('show');
+    toggle.setAttribute('aria-expanded', open);
+  });
+  document.addEventListener('click', e=>{
+    if (!panel.contains(e.target) && e.target !== toggle && panel.classList.contains('show')){
+      panel.classList.remove('show'); toggle.setAttribute('aria-expanded','false');
+    }
+  });
+  $$('.menu-panel a').forEach(a=> a.addEventListener('click', ()=>{ panel.classList.remove('show'); }));
+
+  $('#calmToggle').addEventListener('click', e=>{
+    calmMode = !calmMode;
+    e.target.setAttribute('aria-pressed', calmMode);
+    document.body.classList.toggle('calm-mode', calmMode);
+  });
+  $('#contrastToggle').addEventListener('click', e=>{
+    const on = document.body.classList.toggle('high-contrast');
+    e.target.setAttribute('aria-pressed', on);
+  });
+})();
+
+/* ================================================================
+   AMBIENT SOUND (synthesized — no external audio files needed)
+   ================================================================ */
+(function sound(){
+  let ctx, nodes = [], running = false;
+  function start(){
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const master = ctx.createGain(); master.gain.value = 0.05; master.connect(ctx.destination);
+    [220, 330, 440].forEach((freq,i)=>{
+      const osc = ctx.createOscillator(); osc.type='sine'; osc.frequency.value = freq;
+      const gain = ctx.createGain(); gain.gain.value = i===0 ? 0.6 : 0.25;
+      osc.connect(gain); gain.connect(master); osc.start();
+      nodes.push(osc);
+    });
+    running = true;
+  }
+  function stop(){ nodes.forEach(n=>n.stop()); nodes=[]; if (ctx) ctx.close(); running=false; }
+  $('#soundToggle').addEventListener('click', e=>{
+    if (!running){ start(); e.target.setAttribute('aria-pressed','true'); }
+    else{ stop(); e.target.setAttribute('aria-pressed','false'); }
+  });
+})();
+
+/* ================================================================
+   CRYSTAL HEART (hero)
+   ================================================================ */
+(function crystalHeart(){
+  const btn = $('#crystalHeart'), panel = $('#crystalReveal');
+  let pressTimer, longPressed = false;
+  const poem = `A small poem, just for you:<br>Two names, one sky,<br>a thousand small Tuesdays —<br>that's the whole of it, ${CONFIG.nickname}.`;
+  const secret = `The secret: I didn't fall for you all at once. I fall for you constantly, in installments — this is just the part of me that finally said so.`;
+  function show(html){ panel.innerHTML = html; panel.classList.add('show'); }
+  btn.addEventListener('mousedown', ()=>{ longPressed=false; pressTimer = setTimeout(()=>{ longPressed=true; show(secret); }, 650); });
+  btn.addEventListener('touchstart', ()=>{ longPressed=false; pressTimer = setTimeout(()=>{ longPressed=true; show(secret); }, 650); }, {passive:true});
+  ['mouseup','mouseleave','touchend'].forEach(evt=> btn.addEventListener(evt, ()=>{
+    clearTimeout(pressTimer);
+    if (!longPressed && evt!=='mouseleave') show(poem);
+  }));
+})();
+
+/* ================================================================
+   WAX SEAL LETTER (chapter II)
+   ================================================================ */
+(function waxLetter(){
+  const seal = $('#waxSeal'), paper = $('#letterPaper'), nextBtn = $('#nextNote');
+  let idx = 0;
+  function render(){
+    const n = CONFIG.loveNotes[idx % CONFIG.loveNotes.length];
+    paper.innerHTML = n.body + `<span class="sign">${n.sign}${CONFIG.yourName}</span>`;
+  }
+  function openLetter(){
+    seal.classList.add('broken');
+    render();
+    setTimeout(()=>{ paper.classList.add('open'); nextBtn.classList.add('show'); }, motionOff()?0:250);
+  }
+  seal.addEventListener('click', openLetter, { once:true });
+  nextBtn.addEventListener('click', ()=>{ idx++; render(); });
+})();
+
+/* ================================================================
+   LANTERN RIVER (chapter III)
+   ================================================================ */
+(function lantern(){
+  const btn = $('#lanternBtn'), fly = $('#lanternFly'), wish = $('#wishText');
+  let i = 0;
+  btn.addEventListener('click', ()=>{
+    fly.classList.remove('go'); void fly.offsetWidth; fly.classList.add('go');
+    wish.classList.remove('show');
+    setTimeout(()=>{
+      wish.textContent = CONFIG.wishes[i % CONFIG.wishes.length];
+      wish.classList.add('show');
+      i++;
+    }, motionOff() ? 50 : 1200);
+  });
+})();
+
+/* ================================================================
+   PET LOVERS' HOLLOW (chapter IV)
+   ================================================================ */
+(function petsHollow(){
+  const grid = $('#petGrid');
+  CONFIG.pets.forEach(p=>{
+    const card = document.createElement('div');
+    card.className = 'pet-card';
+    card.innerHTML = `<span class="paw">${p.emoji}</span><div class="pname">${p.name}</div><div class="ptrait">${p.trait}</div>`;
+    grid.appendChild(card);
+  });
+  const pendant = $('#pendantBtn'), note = $('#hollowNote');
+  let clicks = 0;
+  pendant.addEventListener('click', ()=>{
+    clicks++;
+    $$('.pet-card').forEach((c,i)=> setTimeout(()=>{
+      c.classList.remove('celebrate'); void c.offsetWidth; c.classList.add('celebrate');
+    }, motionOff()?0:i*120));
+    if (clicks === 1){
+      note.textContent = "They came running — every single time, no matter how busy the day was.";
+      note.classList.add('show');
+    } else if (clicks === 3){
+      note.textContent = "Even they approve of us, " + CONFIG.nickname + ". Unanimously. Loudly.";
+      note.classList.add('show');
+    }
+  });
+})();
+
+/* ================================================================
+   OUR FOREVER HOME (chapter V)
+   ================================================================ */
+(function foreverHome(){
+  const key = $('#keyBtn'), door = $('#doorIllustration'), reveal = $('#homeReveal');
+  const list = $('#timelineList');
+  CONFIG.milestones.forEach(m=>{
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="tdate">${m.date}</span>${m.label}`;
+    list.appendChild(li);
+  });
+  key.addEventListener('click', ()=>{
+    door.classList.add('open');
+    setTimeout(()=> reveal.classList.add('show'), motionOff()?0:400);
+  }, { once:true });
+
+  const chairA = $('#chairA'), chairB = $('#chairB'), porchNote = $('#porchNote');
+  function checkChairs(){
+    const both = chairA.classList.contains('picked') && chairB.classList.contains('picked');
+    if (both) porchNote.classList.add('show');
+  }
+  chairA.addEventListener('click', ()=>{ chairA.classList.toggle('picked'); chairA.setAttribute('aria-pressed', chairA.classList.contains('picked')); checkChairs(); });
+  chairB.addEventListener('click', ()=>{ chairB.classList.toggle('picked'); chairB.setAttribute('aria-pressed', chairB.classList.contains('picked')); checkChairs(); });
+})();
+
+/* ================================================================
+   EPILOGUE — CONSTELLATION GAME
+   ================================================================ */
+(function constellation(){
+  const svg = $('#constellation');
+  const progress = $('#constProgress');
+  const finale = $('#finaleText');
+  const W=300, H=260, cx=150, cy=132, scale=7.0;
+  const N = 22;
+  const points = [];
+  for (let i=0;i<N;i++){
+    const t = (i/N) * Math.PI*2;
+    const x = 16*Math.pow(Math.sin(t),3);
+    const y = -(13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t));
+    points.push({ x: cx + x*scale, y: cy + y*scale*0.92 });
+  }
+  let current = 0;
+  const ns = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs){ const e=document.createElementNS(ns,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); return e; }
+
+  points.forEach((p,i)=>{
+    const c = el('circle', { cx:p.x, cy:p.y, r:5, class:'const-star' + (i===0 ? ' next':''), 'data-i':i, tabindex:'0', role:'button', 'aria-label':'star '+(i+1) });
+    c.addEventListener('click', ()=> tryConnect(i));
+    c.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); tryConnect(i); } });
+    svg.appendChild(c);
+  });
+  const labelTop = el('text', { x:cx, y:38, 'text-anchor':'middle', class:'const-label' });
+  labelTop.textContent = CONFIG.herName.toUpperCase();
+  const labelBottom = el('text', { x:cx, y:H-14, 'text-anchor':'middle', class:'const-label' });
+  labelBottom.textContent = '✦ ' + CONFIG.nickname.toUpperCase() + ' ✦';
+  svg.appendChild(labelTop); svg.appendChild(labelBottom);
+
+  function updateProgress(){ progress.textContent = `${current} of ${N} stars connected`; }
+  updateProgress();
+
+  function tryConnect(i){
+    const stars = $$('.const-star', svg);
+    if (i !== current) {
+      stars[i].animate?.([{ transform:'scale(1)' },{ transform:'scale(1.4)' },{ transform:'scale(1)' }], { duration:250 });
+      return;
+    }
+    const p = points[i];
+    if (current > 0){
+      const prev = points[current-1];
+      svg.insertBefore(el('line', { x1:prev.x, y1:prev.y, x2:p.x, y2:p.y, class:'const-line' }), stars[0]);
+    }
+    stars[i].classList.remove('next');
+    stars[i].classList.add('done');
+    current++;
+    if (current < N) stars[current].classList.add('next');
+    updateProgress();
+    if (current === N){
+      const last = points[N-1], first = points[0];
+      svg.insertBefore(el('line', { x1:last.x, y1:last.y, x2:first.x, y2:first.y, class:'const-line' }), stars[0]);
+      setTimeout(()=>{ labelTop.classList.add('show'); labelBottom.classList.add('show'); finale.classList.add('show'); }, motionOff()?0:300);
+    }
+  }
+})();
+
+/* ================================================================
+   GLOBAL EASTER EGGS
+   ================================================================ */
+(function eggs(){
+  const overlay = $('#eggOverlay'), title = $('#eggTitle'), body = $('#eggBody'), close = $('#eggClose');
+  function openEgg(t,b){ title.textContent=t; body.textContent=b; overlay.classList.add('show'); }
+  close.addEventListener('click', ()=> overlay.classList.remove('show'));
+  overlay.addEventListener('click', e=>{ if (e.target===overlay) overlay.classList.remove('show'); });
+
+  // Triple-click the hero title
+  let clickCount = 0, clickTimer;
+  $('.hero-title').addEventListener('click', ()=>{
+    clickCount++;
+    clearTimeout(clickTimer);
+    clickTimer = setTimeout(()=> clickCount=0, 700);
+    if (clickCount === 3){
+      clickCount = 0;
+      petalBurst();
+      openEgg('✦ found one ✦', `I love you, ${CONFIG.nickname}. That's the whole easter egg — just that, said plainly, three times in a row, because I never get tired of it.`);
+    }
+  });
+
+  // Type "NILA" anywhere
+  let typed = '';
+  window.addEventListener('keydown', e=>{
+    if (e.key.length !== 1) return;
+    typed = (typed + e.key).slice(-4).toUpperCase();
+    if (typed === CONFIG.nickname.toUpperCase().slice(-4)){
+      petalBurst();
+      openEgg('✦ ' + CONFIG.nickname + ' ✦', `Typed it, thought it, meant it — every version of your name, in every font, on every page of this.`);
+    }
+  });
+
+  function petalBurst(){
+    if (motionOff()) return;
+    const shower = $('#petalShower');
+    for (let i=0;i<40;i++){
+      const p = document.createElement('span');
+      p.className = 'petal';
+      p.textContent = Math.random() > 0.5 ? '♥' : '✿';
+      p.style.left = Math.random()*100 + 'vw';
+      p.style.color = Math.random() > 0.5 ? '#E63170' : '#D9B872';
+      p.style.fontSize = (Math.random()*14+10) + 'px';
+      p.style.animationDuration = (Math.random()*2+2.5) + 's';
+      shower.appendChild(p);
+      setTimeout(()=> p.remove(), 5000);
+    }
+  }
+})();
+</script>
+</body>
+</html>
